@@ -11,7 +11,7 @@ import {
   Card,
 } from "react-bootstrap";
 import Message from "../components/Message";
-import { addToCart } from "../actions/CartActions";
+import { addToCart, removeFromCart } from "../actions/CartActions";
 
 function CartScreen({ match, location, history }) {
   const productId = match.params.id;
@@ -30,7 +30,7 @@ function CartScreen({ match, location, history }) {
   }, [dispatch, productId, qty]);
 
   const removeFromCartHandler = (id) => {
-    console.log("remove:", id);
+    dispatch(removeFromCart(id));
   };
 
   const checkoutHandler = () => {
@@ -40,7 +40,9 @@ function CartScreen({ match, location, history }) {
   return (
     <Row>
       <Col md={8}>
-        <h1>Your Cart</h1>
+        <h1>
+          Your Cart <i class="fas fa-shopping-cart"></i>
+        </h1>
         {cartItems.length === 0 ? (
           <Message variant="info">
             Your cart is empty...<Link to="/">Continue Shopping </Link>
