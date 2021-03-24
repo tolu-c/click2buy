@@ -21,23 +21,29 @@ function ProfileScreen({ history }) {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
+  //   const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
+  //   const { success } = userUpdateProfile;
+
+  //   const orderListMy = useSelector((state) => state.orderListMy);
+  //   const { loading: loadingOrders, error: errorOrders, orders } = orderListMy;
+
   useEffect(() => {
     if (!userInfo) {
       history.push("/login");
     } else {
-      if (!user || user.name) {
+      if (!user || !user.name) {
         dispatch(getUserDetails("profile"));
       } else {
         setName(user.name);
         setEmail(user.email);
       }
     }
-  }, [dispatch, history, userInfo, user]);
+  }, [dispatch, history, userInfo, user]); //success
 
   const submitHandler = (e) => {
     e.preventDefault();
 
-    if (password !== confirmPassword) {
+    if (password != confirmPassword) {
       setMessage("Passwords do not match");
     } else {
       console.log("Updating...");
