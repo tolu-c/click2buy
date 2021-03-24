@@ -94,39 +94,39 @@ export const register = (name, email, password) => async (dispatch) => {
   }
 };
 
-// export const getUserDetails = (id) => async (dispatch, getState) => {
-//   try {
-//       dispatch({
-//           type: USER_DETAILS_REQUEST
-//       })
+export const getUserDetails = (id) => async (dispatch, getState) => {
+  try {
+      dispatch({
+          type: USER_DETAILS_REQUEST
+      })
 
-//       const {
-//         userLogin: {userInfo},
-//       } = getState()
+      const {
+        userLogin: {userInfo},
+      } = getState()
 
-//       const config = {
-//           headers: {
-//               'Content-type': 'application/json',
-//               Authorization: `Bearer ${userInfo.token}`
-//           }
-//       }
+      const config = {
+          headers: {
+              'Content-type': 'application/json',
+              Authorization: `Bearer ${userInfo.token}`
+          }
+      }
 
-//       const { data } = await axios.get(
-//           `/api/users/${id}/`,
-//           config
-//       )
+      const { data } = await axios.get(
+          `/api/users/${id}/`,
+          config
+      )
 
-//       dispatch({
-//           type: USER_DETAILS_SUCCESS,
-//           payload: data
-//       })
+      dispatch({
+          type: USER_DETAILS_SUCCESS,
+          payload: data
+      })
 
-//   } catch (error) {
-//       dispatch({
-//           type: USER_DETAILS_FAIL,
-//           payload: error.response && error.response.data.detail
-//               ? error.response.data.detail
-//               : error.message,
-//       })
-//   }
-// }
+  } catch (error) {
+      dispatch({
+          type: USER_DETAILS_FAIL,
+          payload: error.response && error.response.data.detail
+              ? error.response.data.detail
+              : error.message,
+      })
+  }
+}

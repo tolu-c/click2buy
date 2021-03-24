@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Form, Button, Row, Col } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import { useDispatch, useSelector } from "react-redux";
-import { register } from "../actions/UserActions";
 import FormContainer from "../components/FormContainer";
+import { register } from "../actions/UserActions";
 
 function RegisterScreen({ location, history }) {
   const [name, setName] = useState("");
@@ -29,9 +29,9 @@ function RegisterScreen({ location, history }) {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    // console.log("submitted..");
+
     if (password !== confirmPassword) {
-      setMessage("Passwords do not match!");
+      setMessage("Passwords do not match");
     } else {
       dispatch(register(name, email, password));
     }
@@ -40,18 +40,16 @@ function RegisterScreen({ location, history }) {
   return (
     <FormContainer>
       <h1>Sign Up</h1>
-
       {message && <Message variant="danger">{message}</Message>}
       {error && <Message variant="danger">{error}</Message>}
       {loading && <Loader />}
-
       <Form onSubmit={submitHandler}>
         <Form.Group controlId="name">
           <Form.Label>Name</Form.Label>
           <Form.Control
             required
             type="name"
-            placeholder="Enter Name"
+            placeholder="Enter name"
             value={name}
             onChange={(e) => setName(e.target.value)}
           ></Form.Control>
@@ -97,7 +95,7 @@ function RegisterScreen({ location, history }) {
 
       <Row className="py-3">
         <Col>
-          Already have an account?
+          Have an Account?{" "}
           <Link to={redirect ? `/login?redirect=${redirect}` : "/login"}>
             Sign In
           </Link>
