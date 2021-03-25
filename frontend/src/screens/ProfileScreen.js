@@ -5,7 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { getUserDetails, updateUserProfile } from "../actions/UserActions";
-import { USER_UPDATE_PROFILE_RESET, USER_UPDATE_PROFILE_SUCCESS } from '../constants/UserConstants'
+import {
+  USER_UPDATE_PROFILE_RESET,
+  USER_UPDATE_PROFILE_SUCCESS,
+} from "../constants/UserConstants";
 
 function ProfileScreen({ history }) {
   const [name, setName] = useState("");
@@ -22,8 +25,8 @@ function ProfileScreen({ history }) {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-    const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
-    const { success } = userUpdateProfile;
+  const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
+  const { success } = userUpdateProfile;
 
   //   const orderListMy = useSelector((state) => state.orderListMy);
   //   const { loading: loadingOrders, error: errorOrders, orders } = orderListMy;
@@ -33,7 +36,7 @@ function ProfileScreen({ history }) {
       history.push("/login");
     } else {
       if (!user || !user.name || success) {
-        dispatch({type:USER_UPDATE_PROFILE_RESET})
+        dispatch({ type: USER_UPDATE_PROFILE_RESET });
         dispatch(getUserDetails("profile"));
       } else {
         setName(user.name);
@@ -46,7 +49,7 @@ function ProfileScreen({ history }) {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      setMessage("Passwords do not match");
+      setMessage("");
     } else {
       dispatch(
         updateUserProfile({
