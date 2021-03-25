@@ -4,7 +4,8 @@ import { Form, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import { getUserDetails } from "../actions/UserActions";
+import { getUserDetails, updateUserProfile } from "../actions/UserActions";
+import { USER_UPDATE_PROFILE_RESET, USER_UPDATE_PROFILE_SUCCESS } from '../constants/UserConstants'
 
 function ProfileScreen({ history }) {
   const [name, setName] = useState("");
@@ -21,8 +22,8 @@ function ProfileScreen({ history }) {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  //   const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
-  //   const { success } = userUpdateProfile;
+    const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
+    const { success } = userUpdateProfile;
 
   //   const orderListMy = useSelector((state) => state.orderListMy);
   //   const { loading: loadingOrders, error: errorOrders, orders } = orderListMy;
@@ -31,22 +32,30 @@ function ProfileScreen({ history }) {
     if (!userInfo) {
       history.push("/login");
     } else {
-      if (!user || !user.name) {
+      if (!user || !user.name || success) {
+        dispatch({type:USER_UPDATE_PROFILE_RESET})
         dispatch(getUserDetails("profile"));
       } else {
         setName(user.name);
         setEmail(user.email);
       }
     }
-  }, [dispatch, history, userInfo, user]); //success
+  }, [dispatch, history, userInfo, user, success]);
 
   const submitHandler = (e) => {
     e.preventDefault();
 
-    if (password != confirmPassword) {
+    if (password !== confirmPassword) {
       setMessage("Passwords do not match");
     } else {
-      console.log("Updating...");
+      dispatch(
+        updateUserProfile({
+          id: user._id,
+          name: name,
+          email: email,
+          password: password,
+        })
+      );
     }
   };
 
