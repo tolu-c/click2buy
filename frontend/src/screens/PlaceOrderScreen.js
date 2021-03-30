@@ -4,8 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { Link } from "react-router-dom";
 import Message from "../components/Message";
+import { createOrder } from "../actions/OrderActions";
 
-function PlaceOrderScreen() {
+function PlaceOrderScreen({ history }) {
+  const orderCreate = useSelector((state) => state.orderCreate);
+  const { order, error, success } = orderCreate;
+
+  const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
 
   cart.itemsPrice = cart.cartItems
@@ -18,8 +23,21 @@ function PlaceOrderScreen() {
     Number(cart.itemsPrice) + Number(cart.shippingPrice)
   ).toFixed(2);
 
+  useEffect(() => {
+    
+  })
+
   const placeOrder = () => {
-    console.log("place order...");
+    dispatch(
+      createOrder({
+        orderItems: cart.cartItems,
+        shippingAddress: cart.shippingAddress,
+        paymentMethod: cart.paymentMethod,
+        itemsPrice: cart.itemsPrice,
+        shippingPrice: cart.shippingPrice,
+        totalPrice: cart.totalPrice,
+      })
+    );
   };
 
   return (
