@@ -52,6 +52,12 @@ function OrderScreen({ match }) {
                 {order.shippingAddress.postalCode},{" "}
                 {order.shippingAddress.country}
               </p>
+
+              {order.isDelivered ? (
+                <Message variant="success">Paid on {order.deliveredAt}</Message>
+              ) : (
+                <Message variant="warning">Not Dellivered</Message>
+              )}
             </ListGroup.Item>
 
             <ListGroup.Item>
@@ -63,7 +69,7 @@ function OrderScreen({ match }) {
               {order.isPaid ? (
                 <Message variant="success">Paid on {order.paidAt}</Message>
               ) : (
-                <Message variant="warning">Not Paid</Message>
+                <Message variant="warning">Not Dellivered</Message>
               )}
             </ListGroup.Item>
 
