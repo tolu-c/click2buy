@@ -9,6 +9,11 @@ import {
     USER_REGISTER_SUCCESS,
     USER_REGISTER_FAIL,
 
+    USER_ACTIVATE_REQUEST,
+    USER_ACTIVATE_SUCCESS,
+    USER_ACTIVATE_FAIL,
+
+
     USER_DETAILS_REQUEST,
     USER_DETAILS_SUCCESS,
     USER_DETAILS_FAIL,
@@ -75,6 +80,21 @@ export const userRegisterReducer = (state = {}, action) => {
     }
 }
 
+export const useActivateReducer = (state = {}, action) => {
+    switch (action.type) {
+        case USER_ACTIVATE_REQUEST:
+            return { loading: true }
+
+        case USER_ACTIVATE_SUCCESS:
+            return { loading: false, userInfo: action.payload }
+
+        case USER_ACTIVATE_FAIL:
+            return { loading: false, error: action.payload }
+
+        default:
+            return state
+    }
+}
 
 
 export const userDetailsReducer = (state = { user: {} }, action) => {
