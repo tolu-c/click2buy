@@ -75,25 +75,26 @@ def registerUser(request):
 
 
 class VerifyEmail(generics.GenericAPIView):
-    def get(self):
-        pass
+    def get(self, request):
+        token = request.GET.get('token')
+        try:
+            payload = jwt.decode(token, settings.SECRET_KEY)
+            user = User.objects.get(id=payload['user_id'])
+            if not user.is_active:
+                user.is_active = True
+                user.save()
+            return Response({'email':'Successfully Activated'}, status=status.HTTP_200_OK)
+        
+        except jwt.ExpiredSignatureError as identifier:
+            return Response({'error':'Activation link has expired. Requestt for a new one.'}, status=status.HTTP_400_BAD_REQUEST)
+        except jwt.exceptions.DecodeError as identifier:
+            return Response({'error':'Invalid Token! Requestt for a new one.'}, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 @api_view(["POST"])
 def activateUser(request):
-    token = request.GET.get('token')
-    try:
-        payload = jwt.decode(token, settings.SECRET_KEY)
-        user = User.objects.get(id=payload['user_id'])
-        if not user.is_active:
-            user.is_active = True
-            user.save()
-        return Response({'email':'Successfully Activated'}, status=status.HTTP_200_OK)
-    
-    except jwt.ExpiredSignatureError as identifier:
-        return Response({'error':'Activation link has expired. Requestt for a new one.'}, status=status.HTTP_400_BAD_REQUEST)
-    except jwt.exceptions.DecodeError as identifier:
-        return Response({'error':'Invalid Token! Requestt for a new one.'}, status=status.HTTP_400_BAD_REQUEST)
+    pass
 
 
 @api_view(["PUT"])
