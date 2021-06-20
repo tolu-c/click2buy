@@ -1,3 +1,10 @@
 /virtual
-/.env
-/backend/.env
+### Django ###
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+/venv
+/staticfiles
+*.env
