@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-
+import django_heroku
 import os
 from datetime import timedelta
 from pathlib import Path
@@ -17,6 +17,7 @@ import environ
 
 env = environ.Env()
 environ.Env.read_env()
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,10 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "sc%oco$+(3$z$at=z4j)#l-+ym)+_b11389mdt2^12m$bf63%@"
-
+SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', cast=bool)
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost", "click2buy.herokuapp.com"]
 
@@ -115,34 +115,22 @@ WSGI_APPLICATION = "backend.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 DATABASES = {
-   'default': {
-       'ENGINE': 'django.db.backends.postgresql_psycopg2',
-       'NAME': 'click2buy',
-       'USER': 'postgres',
-       'PASSWORD': 'AsdF_7536',
-       'HOST': 'localhost',
-       'PORT': ''
-   }
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("DATABASE_NAME"),
+        "USER": os.environ.get("DATABASE_USER"),
+        "PASSWORD": os.environ.get("DATABASE_PASSWORD"),
+        "HOST": os.environ.get("DATABASE_HOST"),
+        "PORT": "5432",
+    }
 }
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql_psycopg2",
-#         "NAME": BASE_DIR / "postgres",
-#         "USER": "postgres",
-#         "PASSWORD": "AsdF_7536",
-#         "HOST": "localhost",  # Empty for localhost through domain sockets or           '127.0.0.1' for localhost through TCP.
-#         "PORT": "",  # Set to empty string for default.
-#     }
-# }
+import dj_database_url
+
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES["default"].update(db_from_env)
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -203,18 +191,15 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-# EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-
-# DEFAULT_FROM_EMAIL = 'noreply<no_reply@click2buy.com.ng>'
-
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_PORT = config("EMAIL_PORT", cast=int)
+EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool)
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = 'noreply<no_reply@click2buy.com.ng>'
+
+django_heroku.settings(locals())
+
+options = DATABASES["default"].get("OPTIONS", {})
+options.pop("sslmode", None)
