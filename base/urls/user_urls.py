@@ -8,8 +8,8 @@ urlpatterns = [
 
     path('register/', views.registerUser, name='register'),
     
-    path('activate/', views.activateUser, name='activate'),
-    path('verify-email', views.VerifyEmail, name='verify'),
+    # path('activate/', views.activateUser, name='activate'),
+    # path('verify-email', views.VerifyEmail, name='verify'),
 
     path('profile/', views.getUserProfile, name="users-profile"),
     path('profile/update/', views.updateUserProfile, name="user-profile-update"),
