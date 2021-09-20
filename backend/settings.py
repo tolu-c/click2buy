@@ -127,7 +127,7 @@ WSGI_APPLICATION = "backend.wsgi.application"
 DATABASES = {
        'default': {
            'ENGINE': 'djongo',
-           'NAME': 'toluMongo',
+           'NAME': 'click2buy',
        }
    }
 
