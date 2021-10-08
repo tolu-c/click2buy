@@ -14,6 +14,7 @@ import os
 from datetime import timedelta
 from pathlib import Path
 import environ
+import pymongo
 
 env = environ.Env()
 environ.Env.read_env()
@@ -124,12 +125,29 @@ WSGI_APPLICATION = "backend.wsgi.application"
 #     }
 # }
 
+# from pymongo import MongoClient
+
+# client = pymongo.MongoClient('connection_string')
+# db = client['thePlug']
+
+# connection_string = mongodb+srv://admin:7kT5EpK@krNdJNtG@theplug.rtmno.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+import urllib.parse
+
 DATABASES = {
-       'default': {
-           'ENGINE': 'djongo',
-           'NAME': 'click2buy',
-       }
-   }
+        'default': {
+            'ENGINE': 'djongo',
+            'NAME': 'thePlug',
+            'ENFORCE_SCHEMA': False,
+            'CLIENT': {
+                'host': 'mongodb+srv://admin:' + urllib.parse.quote('7kT5EpK@krNdJNt') + 'G@theplug.rtmno.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+            }  
+        }
+}
+
+
+# client = pymongo.MongoClient("mongodb+srv://admin:<password>@theplug.rtmno.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+# db = client.test
+
 
 
 import dj_database_url
