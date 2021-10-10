@@ -23,3 +23,40 @@ username : `admin@cllick2buy.com`
 password : `asdf:lkj`
 
 if that doesn't work, create a new superuser using : `python manage.py createsuperuser`
+
+```py
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": os.environ.get("DATABASE_NAME"),
+#         "USER": os.environ.get("DATABASE_USER"),
+#         "PASSWORD": os.environ.get("DATABASE_PASSWORD"),
+#         "HOST": os.environ.get("DATABASE_HOST"),
+#         "PORT": "5432",
+#     }
+# }
+
+# from pymongo import MongoClient
+
+# client = pymongo.MongoClient('connection_string')
+# db = client['thePlug']
+
+# connection_string = mongodb+srv://admin:7kT5EpK@krNdJNtG@theplug.rtmno.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+import urllib.parse
+
+# DATABASES = {
+#         'default': {
+#             'ENGINE': 'djongo',
+#             'NAME': 'thePlug',
+#             'ENFORCE_SCHEMA': False,
+#             'CLIENT': {
+#                 'host': 'mongodb+srv://admin:' + urllib.parse.quote('7kT5EpK@krNdJNt') + 'G@theplug.rtmno.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+#             }  
+#         }
+# }
+
+
+# client = pymongo.MongoClient("mongodb+srv://admin:<password>@theplug.rtmno.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+# db = client.test
+
+```
