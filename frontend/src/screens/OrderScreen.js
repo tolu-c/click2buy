@@ -199,6 +199,18 @@ function OrderScreen({ match, history }) {
                                         </ListGroup.Item>
                                     )}
                                 </ListGroup>
+                                {loadingDeliver && <Loader />}
+                                {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                                    <ListGroup.Item>
+                                        <Button
+                                            type='button'
+                                            className='btn btn-block'
+                                            onClick={deliverHandler}
+                                        >
+                                            Mark As Delivered
+                                        </Button>
+                                    </ListGroup.Item>
+                                )}
                             </Card>
                         </Col>
                     </Row>
