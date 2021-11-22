@@ -114,7 +114,7 @@ DATABASES = {
         'USER': 'admin',
         'PASSWORD': 'asdf:lkj',
         'HOST': 'localhost',
-        'PORT': '',
+        'PORT': '5432',
     }
 }
 
